@@ -17,6 +17,8 @@ class ThemeController extends GetxController {
 
 class Themes {
   static final lightTheme = Get.theme.copyWith(
+    primaryIconTheme: const IconThemeData(color: AppColors.onPrimaryLight),
+    cardTheme: CardTheme().copyWith(color: Colors.white),
     textTheme: theme.apply(bodyColor: AppColors.textColorLight, displayColor: AppColors.textColorLight),
     appBarTheme: appBarThemeLight,
     textButtonTheme: btnThemeLight,
@@ -34,6 +36,8 @@ class Themes {
   static final darkTheme = Get.theme.copyWith(
       textTheme: theme.apply(bodyColor: AppColors.textColorDark, displayColor: AppColors.textColorDark, decorationColor: AppColors.textColorDark),
       textButtonTheme: btnThemeDark,
+      cardTheme: CardTheme().copyWith(color: AppColors.btnColorDark),
+      primaryIconTheme: const IconThemeData(color: AppColors.onPrimaryDark),
       appBarTheme: appBarThemeDark,
       iconTheme: iconThemeDark,
       scaffoldBackgroundColor: AppColors.backgroundDark,

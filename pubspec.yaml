@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^3.0.1
   auto_size_text: ^3.0.0
   expandable: ^5.0.1
+  cached_network_image: ^3.2.0
+  toggle_switch: ^2.0.1
 
 dev_dependencies:
   flutter_test:
