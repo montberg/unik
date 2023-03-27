@@ -48,7 +48,7 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoCarrierGuidance.execute(),
                       isChevronBlack: true,
-                      child: AutoSizeText("ТЕСТ НА ПРОФОРИЕНТАЦИЮ"),
+                      child: const AutoSizeText("ТЕСТ НА ПРОФОРИЕНТАЦИЮ"),
                     ),
                     const SizedBox(
                       height: 10,
@@ -56,7 +56,7 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoPlanning.execute(),
                       isChevronBlack: true,
-                      child: AutoSizeText("ПЛАНИРОВЩИК ПОСТУПЛЕНИЯ"),
+                      child: const AutoSizeText("ПЛАНИРОВЩИК ПОСТУПЛЕНИЯ"),
                     ),
                   ],
                 ),
@@ -65,7 +65,7 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoExamCalculator.execute(),
                       isChevronBlack: true,
-                      child: AutoSizeText.rich(
+                      child: const AutoSizeText.rich(
                         TextSpan(children: [
                           TextSpan(
                               text: "КАЛЬКУЛЯТОР ЕГЭ"),
@@ -80,14 +80,14 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoTutors.execute(),
                       isChevronBlack: true,
-                      child: AutoSizeText("ПОДГОТОВКА К ЕГЭ/ОГЭ"),
+                      child: const AutoSizeText("ПОДГОТОВКА К ЕГЭ/ОГЭ"),
                     ),
                   ],
                 ),
                 Button(
                   onPressed: () => gotoCourses.execute(),
                   isChevronBlack: true,
-                  child: AutoSizeText.rich(
+                  child: const AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
                           text: "СПИСОК УНИВЕРСИТЕТОВ"),

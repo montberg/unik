@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 
 class Button extends StatelessWidget {
@@ -35,6 +34,7 @@ class Button extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   alignment: Alignment.centerLeft),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Visibility(
                     visible: icon == null ? false : true,
@@ -43,9 +43,11 @@ class Button extends StatelessWidget {
                       child: icon ?? SizedBox.shrink(),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 22.0),
-                    child: child ?? const Text("default"),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 22.0),
+                      child: child ?? const Text("default"),
+                    ),
                   ),
                 ],
               ),

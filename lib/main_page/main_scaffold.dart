@@ -36,7 +36,7 @@ class MainScaffold extends StatelessWidget {
             const BottomNavBar(),
         body: Obx(() => IndexedStack(
           index: landingPageController.tabIndex.value,
-          children: [
+          children: const [
             MainPageWidget(),
             UniversitiesPage(),
             Placeholder(),

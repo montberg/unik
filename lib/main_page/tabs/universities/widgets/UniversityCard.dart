@@ -2,40 +2,36 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:unik/main_page/tabs/universities/University.dart';
 
+import '../../../../global_widgets/CachedImage.dart';
+import 'university_page/UniversityPage.dart';
 
-class University{
-  String image;
-  String city;
-  String name;
+class UniversityCardInfo {
+  University university;
   bool favourite;
-  bool accreditation;
-  bool dorms;
-  bool militarydep;
-  University({required this.image,  required this.city,  required this.name,  required this.favourite,  required this.accreditation,  required this.dorms,  required this.militarydep}){
-    image = image;
-    city = city;
-    name = name;
-    favourite = favourite;
-    accreditation = accreditation;
-    dorms = dorms;
-    militarydep = militarydep;
-  }
+
+  UniversityCardInfo({
+    required this.university,
+    required this.favourite,
+  });
 }
 
 class UniversityCard extends StatelessWidget {
-  final University university;
+  final UniversityCardInfo universityCardInfo;
 
-  const UniversityCard({Key? key, required this.university}) : super(key: key);
+  const UniversityCard({Key? key, required this.universityCardInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Card(
-
+        elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: InkWell(
-          onTap: (){},
+          onTap: () {
+            Get.to(UniversityPage(university: universityCardInfo.university));
+          },
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -47,35 +43,26 @@ class UniversityCard extends StatelessWidget {
                     width: double.infinity,
                     color: Colors.transparent,
                     child: ClipRRect(
-                      child: CachedNetworkImage(
-                        height: 200,
-                        fit: BoxFit.fitHeight,
-                        imageUrl: university.image,
-                        placeholder: (context, url) => const SizedBox(child: Center(child: CircularProgressIndicator()), height: 200,),
-                        errorWidget: (context, url, error) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error, color: Colors.black.withOpacity(0.5)),
-                            Text("Не удалось загрузить изображение :(", style: TextStyle(color: Colors.black.withOpacity(0.5)),)
-                          ],
-                        ),
-                      ),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                      child: Hero(tag: universityCardInfo.university.id, child: CachedImage(image: universityCardInfo.university.image, height: 200,)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(10)),
                     ),
                   ),
                   IconButton(
                     onPressed: () {
-                      university.favourite = !university.favourite;
+                      universityCardInfo.favourite = !universityCardInfo.favourite;
                     },
-                    icon : Stack(
+                    icon: Stack(
                       children: [
                         const Positioned(
                           left: 1.0,
                           top: 2.0,
                           child: Icon(Icons.favorite, color: Colors.black54),
                         ),
-                        Icon(Icons.favorite, color: university.favourite ? Colors.red : Colors.white),
+                        Icon(Icons.favorite,
+                            color: universityCardInfo.favourite
+                                ? Colors.red
+                                : Colors.white),
                       ],
                     ),
                   )
@@ -87,9 +74,14 @@ class UniversityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    AutoSizeText(university.city, style: Get.theme.textTheme.button?.copyWith(color: Get.theme.textTheme.button?.color?.withOpacity(0.6))),
+                    AutoSizeText(universityCardInfo.university.city,
+                        style: Get.theme.textTheme.button?.copyWith(
+                            color: Get.theme.textTheme.button?.color
+                                ?.withOpacity(0.6))),
                     const SizedBox(height: 10),
-                    AutoSizeText(university.name, style: Get.theme.textTheme.button?.copyWith(fontWeight: FontWeight.w800))
+                    AutoSizeText(universityCardInfo.university.name,
+                        style: Get.theme.textTheme.button
+                            ?.copyWith(fontWeight: FontWeight.w800))
                   ],
                 ),
               ),
