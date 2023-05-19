@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
+import '../../../../auth_page/User.dart';
 import '../../../../global_widgets/button.dart';
 import '../../../../global_widgets/userInfo.dart';
 import '../controllers/goto_profile_editing.dart';
 import '../controllers/goto_saved.dart';
-import '../controllers/goto_settings.dart';
+import '../controllers/logout_button_controller.dart';
 
 
 class ProfilePageWidget extends StatelessWidget {
-  const ProfilePageWidget({Key? key}) : super(key: key);
+  final User user;
+
+  const ProfilePageWidget({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,9 @@ class ProfilePageWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             height: 150,
-            child: UserInfo(),
+            child: UserInfo(user: user),
           ),
           const Divider(
             thickness: 1,
@@ -39,7 +43,7 @@ class ProfilePageWidget extends StatelessWidget {
                       Icons.account_circle_rounded,
                       size: 40,
                     ),
-                    child: Text("Редактировать профиль"),
+                    child: Text("Редактировать профиль", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     onPressed: () => gotoProfileEditing.execute(),
                     isChevronBlack: true,
                   ),
@@ -51,7 +55,7 @@ class ProfilePageWidget extends StatelessWidget {
                       Icons.star,
                       size: 40,
                     ),
-                    child: Text("Избранное"),
+                    child: Text("Избранное", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     onPressed: () => gotoSaved.execute(), isChevronBlack: true,
                   ),
                   const SizedBox(
@@ -59,10 +63,10 @@ class ProfilePageWidget extends StatelessWidget {
                   ),
                   Button(
                       icon: const Icon(
-                        Icons.settings,
+                        Icons.logout_rounded,
                         size: 40,
                       ),
-                    child: Text("Настройки"),
+                    child: Text("Выйти из аккаунта", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     onPressed: () => gotoSettings.execute(), isChevronBlack: true,),
                   const SizedBox(height: 80),
                 ],

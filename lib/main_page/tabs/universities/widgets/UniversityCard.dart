@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:unik/global_widgets/button.dart';
 import 'package:unik/main_page/tabs/universities/University.dart';
 
 import '../../../../global_widgets/CachedImage.dart';
@@ -17,11 +19,17 @@ class UniversityCardInfo {
   });
 }
 
-class UniversityCard extends StatelessWidget {
+class UniversityCard extends StatefulWidget {
   final UniversityCardInfo universityCardInfo;
 
-  const UniversityCard({Key? key, required this.universityCardInfo}) : super(key: key);
+  const UniversityCard({Key? key, required this.universityCardInfo})
+      : super(key: key);
 
+  @override
+  State<UniversityCard> createState() => _UniversityCardState();
+}
+
+class _UniversityCardState extends State<UniversityCard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,12 +37,13 @@ class UniversityCard extends StatelessWidget {
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: InkWell(
+          borderRadius: BorderRadius.circular(10),
           onTap: () {
-            Get.to(UniversityPage(university: universityCardInfo.university));
+            Get.to(UniversityPage(university: widget.universityCardInfo.university));
           },
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 alignment: Alignment.topRight,
@@ -43,14 +52,23 @@ class UniversityCard extends StatelessWidget {
                     width: double.infinity,
                     color: Colors.transparent,
                     child: ClipRRect(
-                      child: Hero(tag: universityCardInfo.university.id, child: CachedImage(image: universityCardInfo.university.image, height: 200,)),
+                      child: Hero(
+                          tag: widget.universityCardInfo.university.id,
+                          child: CachedImage(
+                            image: widget.universityCardInfo.university.image,
+                            fit: BoxFit.cover,
+                            height: 200,
+                          )),
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(10)),
                     ),
                   ),
                   IconButton(
                     onPressed: () {
-                      universityCardInfo.favourite = !universityCardInfo.favourite;
+                      setState(() {
+                        widget.universityCardInfo.favourite =
+                        !widget.universityCardInfo.favourite;
+                      });
                     },
                     icon: Stack(
                       children: [
@@ -60,7 +78,7 @@ class UniversityCard extends StatelessWidget {
                           child: Icon(Icons.favorite, color: Colors.black54),
                         ),
                         Icon(Icons.favorite,
-                            color: universityCardInfo.favourite
+                            color: widget.universityCardInfo.favourite
                                 ? Colors.red
                                 : Colors.white),
                       ],
@@ -74,14 +92,18 @@ class UniversityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    AutoSizeText(universityCardInfo.university.city,
-                        style: Get.theme.textTheme.button?.copyWith(
-                            color: Get.theme.textTheme.button?.color
-                                ?.withOpacity(0.6))),
-                    const SizedBox(height: 10),
-                    AutoSizeText(universityCardInfo.university.name,
-                        style: Get.theme.textTheme.button
-                            ?.copyWith(fontWeight: FontWeight.w800))
+                    Opacity(
+                      opacity: 0.6,
+                      child: AutoSizeText(
+                          widget.universityCardInfo.university.universityContacts.city,
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w600)),
+                    ),
+                    const SizedBox(height: 5),
+                    AutoSizeText(widget.universityCardInfo.university.name,
+                        style:
+                            GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
+
                   ],
                 ),
               ),

@@ -12,14 +12,15 @@ class ThemeController extends GetxController {
     isDarkMode.value = Get.isDarkMode;
     icon.value = Get.isDarkMode ? Icons.nightlight : Icons.wb_sunny;
   }
-
+  static ThemeData getLightTheme = Themes.lightTheme;
+  static ThemeData getDarkTheme = Themes.darkTheme;
 }
 
 class Themes {
   static final lightTheme = Get.theme.copyWith(
     primaryIconTheme: const IconThemeData(color: AppColors.onPrimaryLight),
-    cardTheme: CardTheme().copyWith(color: Colors.white),
-    textTheme: theme.apply(bodyColor: AppColors.textColorLight, displayColor: AppColors.textColorLight),
+    cardTheme: const CardTheme().copyWith(color: Colors.white),
+    textTheme: theme.apply(bodyColor: AppColors.textColorLight, displayColor: AppColors.textColorLight, fontFamily: GoogleFonts.montserrat().fontFamily),
     appBarTheme: appBarThemeLight,
     textButtonTheme: btnThemeLight,
     scaffoldBackgroundColor: AppColors.backgroundLight,
@@ -34,7 +35,7 @@ class Themes {
   );
 
   static final darkTheme = Get.theme.copyWith(
-      textTheme: theme.apply(bodyColor: AppColors.textColorDark, displayColor: AppColors.textColorDark, decorationColor: AppColors.textColorDark),
+      textTheme: theme.apply(bodyColor: AppColors.textColorDark, displayColor: AppColors.textColorDark, decorationColor: AppColors.textColorDark, fontFamily: GoogleFonts.montserrat().fontFamily),
       textButtonTheme: btnThemeDark,
       cardTheme: CardTheme().copyWith(color: AppColors.btnColorDark),
       primaryIconTheme: const IconThemeData(color: AppColors.onPrimaryDark),

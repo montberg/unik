@@ -5,7 +5,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 const List<String> list = <String>['не важно', 'да', 'нет'];
 
 class FilterMenu extends StatelessWidget {
-  const FilterMenu({Key? key}) : super(key: key);
+  const FilterMenu({Key? key, required this.onStateSelected}) : super(key: key);
+  final Function(int) onStateSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,11 @@ class FilterMenu extends StatelessWidget {
     var accreditationSelectedValue = list.first.obs;
     var dormsSelectedValue = list.first.obs;
     var citySearchController = TextEditingController();
+
     return SingleChildScrollView(
       child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
+        decoration: BoxDecoration(
+            color: Get.theme.appBarTheme.backgroundColor,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -58,7 +60,7 @@ class FilterMenu extends StatelessWidget {
                   totalSwitches: 2,
                   labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
                   onToggle: (index) {
-                    print('switched to: $index');
+                    onStateSelected(index!);
                   },
                 ),
               ),
@@ -153,11 +155,12 @@ class FilterMenu extends StatelessWidget {
                     textStyle: Get.theme.textTheme.button!
                         .copyWith(color: Colors.white)),
                 child: Container(
-                  child: Text("ПРИМЕНИТЬ", style: Get.theme.textTheme.button),
+                  child: Text("ПРИМЕНИТЬ", style: Get.theme.textTheme.button?.copyWith(color: Colors.white)),
                   width: double.infinity,
                   alignment: Alignment.center,
                 ),
               ),
+              SizedBox(height: 5,),
               TextButton(
                 onPressed: () {
                   milSelectedValue.value = list.first;

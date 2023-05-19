@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-
 import 'package:auto_size_text/auto_size_text.dart';
-
-
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../auth_page/User.dart';
 import '../../../../global_widgets/button.dart';
 import '../../../../global_widgets/userInfo.dart';
-import '../controllers/goto_carier_guidance.dart';
+import '../controllers/goto_carrier_guidance.dart';
 import '../controllers/goto_courses.dart';
 import '../controllers/goto_exam_calculator.dart';
 import '../controllers/goto_planning.dart';
 import '../controllers/goto_tutors.dart';
 
 class MainPageWidget extends StatelessWidget {
+  final User user;
+
   const MainPageWidget({
     Key? key,
+    required this.user
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final gotoCarrierGuidance = GotoCarierGuidance();
-    final gotoCourses = GotoCourses();
+    final gotoCarrierGuidance = GotoCarrierGuidance();
+    final gotoUniversities = GotoUniversities();
     final gotoExamCalculator = GotoExamCalculator();
     final gotoPlanning = GotoPlanning();
     final gotoTutors = GotoTutors();
@@ -31,9 +32,9 @@ class MainPageWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const SizedBox(
+          SizedBox(
             height: 150,
-            child: UserInfo(),
+            child: UserInfo(user: user),
           ),
           const Divider(
             thickness: 1,
@@ -48,7 +49,7 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoCarrierGuidance.execute(),
                       isChevronBlack: true,
-                      child: const AutoSizeText("ТЕСТ НА ПРОФОРИЕНТАЦИЮ"),
+                      child: AutoSizeText("ТЕСТ НА ПРОФОРИЕНТАЦИЮ", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800),),
                     ),
                     const SizedBox(
                       height: 10,
@@ -56,7 +57,7 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoPlanning.execute(),
                       isChevronBlack: true,
-                      child: const AutoSizeText("ПЛАНИРОВЩИК ПОСТУПЛЕНИЯ"),
+                      child:  AutoSizeText("ПЛАНИРОВЩИК ПОСТУПЛЕНИЯ", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     ),
                   ],
                 ),
@@ -65,10 +66,10 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoExamCalculator.execute(),
                       isChevronBlack: true,
-                      child: const AutoSizeText.rich(
+                      child:  AutoSizeText.rich(
                         TextSpan(children: [
                           TextSpan(
-                              text: "КАЛЬКУЛЯТОР ЕГЭ"),
+                              text: "КАЛЬКУЛЯТОР ЕГЭ", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                         ]),
                         textAlign: TextAlign.justify,
                         maxLines: 1,
@@ -80,17 +81,17 @@ class MainPageWidget extends StatelessWidget {
                     Button(
                       onPressed: () => gotoTutors.execute(),
                       isChevronBlack: true,
-                      child: const AutoSizeText("ПОДГОТОВКА К ЕГЭ/ОГЭ"),
+                      child:  AutoSizeText("ПОДГОТОВКА К ЕГЭ/ОГЭ", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     ),
                   ],
                 ),
                 Button(
-                  onPressed: () => gotoCourses.execute(),
+                  onPressed: () => gotoUniversities.execute(),
                   isChevronBlack: true,
-                  child: const AutoSizeText.rich(
+                  child:  AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
-                          text: "СПИСОК УНИВЕРСИТЕТОВ"),
+                          text: "СПИСОК УНИВЕРСИТЕТОВ", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
                     ]),
                     textAlign: TextAlign.justify,
                     maxLines: 1,

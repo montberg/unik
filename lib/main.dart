@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'main_page/main_scaffold.dart';
+import 'package:unik/auth_page/splash_screen/SplashScreen.dart';
 import 'assets/themes.dart';
 void main() {
-  runApp(
-      GetMaterialApp(
-        home: MainScaffold(),
-        darkTheme: Themes.darkTheme,
-        theme: Themes.lightTheme,
-        themeMode: ThemeMode.system,
-        //debugShowMaterialGrid: false,
-      )
-  );
+  Get.put(ThemeController());
+  runApp(GetMaterialApp(home: SplashScreen(), theme: ThemeController.getLightTheme, darkTheme: ThemeController.getDarkTheme));
 }

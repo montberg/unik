@@ -7,17 +7,18 @@ class CachedImage extends StatelessWidget {
 
   const CachedImage({
     Key? key,
-    required this.image, required this.height,
+    required this.image, required this.height, required this.fit
   }) : super(key: key);
 
   final String image;
   final double? height;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       height: height,
-      fit: BoxFit.fitHeight,
+      fit: fit,
       imageUrl: image,
       placeholder: (context, url) => SizedBox(
         child: Center(child: CircularProgressIndicator()),

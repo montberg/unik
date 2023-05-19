@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unik/main_page/tabs/universities/controllers/FakeUniversityListLoader.dart';
+import 'package:unik/main_page/tabs/universities/widgets/UniversityCard.dart';
+import '../controllers/FakeSpecialityListLoader.dart';
+import '../controllers/UniversityListLoader.dart';
 import '../interfaces/IUniversityListLoader.dart';
 import 'FilterMenu.dart';
 
@@ -30,11 +33,12 @@ class _UniversitiesPageState extends State<UniversitiesPage>
   late AnimationController _controller;
   late Animation<double> _animation;
   //late bool _isOpen;
-
+  late RxInt currentPageIndex;
   @override
   void initState() {
     super.initState();
     //_isOpen = false;
+    currentPageIndex = 0.obs;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 100),
       vsync: this,
@@ -54,9 +58,14 @@ class _UniversitiesPageState extends State<UniversitiesPage>
     }
   }
 
+  _changePage(index){
+      currentPageIndex.value = index;
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchController = TextEditingController();
+    final IUniversityListLoader loader = FakeUniversityListLoader();
     return SafeArea(
       top: true,
       child: Scaffold(
@@ -85,8 +94,8 @@ class _UniversitiesPageState extends State<UniversitiesPage>
                               searchController.clear();
                             },
                             icon: const Icon(Icons.clear))),
-                  ),
-                )),
+                  ))
+                ),
                 Obx(() => IconButton(
                     icon: ExpansionController.isExpanded.value
                         ? const Icon(
@@ -107,37 +116,41 @@ class _UniversitiesPageState extends State<UniversitiesPage>
         ),
         body: Stack(
           children: [
-            FutureBuilder<List<Widget>>(
-                future:
-                    _loadList(FakeUniversityListLoader()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Column(
-                      children: const [Text("Что-то пошло не так...")],
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      if (kDebugMode) {
-                        print("hasdata");
+            Obx(()=>
+               FutureBuilder<List<Widget>>(
+                  future:
+                      _loadList(currentPageIndex.value == 0 ? loader : FakeSpecialityListLoader()),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      debugPrint(snapshot.error.toString());
+                      return Column(
+                        children: [Text("Что-то пошло не так..."), Text(snapshot.error.toString())],
+                      );
+                    } else if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        if (kDebugMode) {
+                          print("hasdata");
+                        }
+                        return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                children: snapshot.data ?? [],
+                              ),
+                            )
+                        );
+                      } else {
+                        if (kDebugMode) {
+                          print('error');
+                        }
+                        return const Icon(Icons.error);
                       }
-                      return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              children: [...snapshot.data!],
-                            ),
-                          ));
                     } else {
-                      if (kDebugMode) {
-                        print('error');
-                      }
-                      return const Icon(Icons.error);
+                      return const Center(child: CircularProgressIndicator());
                     }
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
+                  }),
+            ),
             Obx(
               () => GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -156,14 +169,16 @@ class _UniversitiesPageState extends State<UniversitiesPage>
             SizeTransition(
                 sizeFactor: _animation,
                 axis: Axis.vertical,
-                child: const FilterMenu()),
+                child: FilterMenu(onStateSelected: _changePage,)),
           ],
         ),
       ),
     );
   }
 
-  _loadList(IUniversityListLoader loader) {
+  Future<List<Widget>> _loadList(IUniversityListLoader loader) {
     return loader.loadList();
   }
 }
+
+

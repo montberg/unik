@@ -18,8 +18,9 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(top: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 8,
+      elevation: 4,
       shadowColor: Colors.black.withOpacity(0.5),
       child: Stack(alignment: Alignment.center, children: [
         ClipRRect(

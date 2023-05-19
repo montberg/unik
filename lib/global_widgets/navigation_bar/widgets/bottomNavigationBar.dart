@@ -38,16 +38,16 @@ class BottomNavBar extends StatelessWidget{
           ),
           label: 'ВУЗы/ССУЗы',
         ),
-        BottomNavigationBarItem(
-          icon: Container(
-            margin: const EdgeInsets.only(bottom: 7),
-            child: const Icon(
-              Icons.location_history,
-              size: 30.0,
-            ),
-          ),
-          label: 'Помощник',
-        ),
+        //BottomNavigationBarItem(
+        //  icon: Container(
+        //    margin: const EdgeInsets.only(bottom: 7),
+        //    child: const Icon(
+        //      Icons.location_history,
+        //      size: 30.0,
+        //    ),
+        //  ),
+        //  label: 'Помощник',
+        //),
         BottomNavigationBarItem(
           icon: Container(
             margin: const EdgeInsets.only(bottom: 7),

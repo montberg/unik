@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:unik/auth_page/User.dart';
 
 import '../assets/themes.dart';
 
@@ -11,39 +11,38 @@ import 'tabs/profile_page/widgets/ProfilePage.dart';
 import 'tabs/universities/widgets/UniversitiesPage.dart';
 
 
-
-
-
 class MainScaffold extends StatelessWidget {
-  var c = Get.put(ThemeController());
+  final c = Get.put(ThemeController());
   final BottomNavigationBarController landingPageController =
       Get.put(BottomNavigationBarController(), permanent: false);
-  MainScaffold({Key? key}) : super(key: key);
+  final User user;
+
+  MainScaffold({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: true,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Obx(() => Icon(c.icon.value)),
-          onPressed: () {
-            c.changeTheme();
-            BottomNavigationBarController w = Get.find();
-            w.changeColor();
-          },
-        ),
-        bottomNavigationBar:
-            const BottomNavBar(),
-        body: Obx(() => IndexedStack(
+    return Scaffold(
+     // floatingActionButton: FloatingActionButton(
+     //   child: Obx(() => Icon(c.icon.value)),
+     //   onPressed: () {
+     //     c.changeTheme();
+     //     BottomNavigationBarController w = Get.find();
+     //     w.changeColor();
+     //   },
+     // ),
+      bottomNavigationBar:
+          const BottomNavBar(),
+      body: Obx(() => SafeArea(
+        top: true,
+        child: IndexedStack(
           index: landingPageController.tabIndex.value,
-          children: const [
-            MainPageWidget(),
-            UniversitiesPage(),
-            Placeholder(),
-            ProfilePageWidget(),
-          ],
-        )),
-      ),
+          children: [
+            MainPageWidget(user: user),
+            const UniversitiesPage(),
+           // const Placeholder(),
+            ProfilePageWidget(user: user),
+          ]
+        ),
+      ))
     );
   }
 }

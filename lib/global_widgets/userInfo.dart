@@ -1,11 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:unik/auth_page/User.dart';
 
 class UserInfo extends StatelessWidget {
-  const UserInfo({Key? key}) : super(key: key);
-  //final String name;
-  //final String status;
+  const UserInfo({Key? key, required this.user}) : super(key: key);
+  final User user;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,9 +18,9 @@ class UserInfo extends StatelessWidget {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AutoSizeText("Дарья Сергиенко"),
+            AutoSizeText(user.name),
             SizedBox(height: 10,),
-            AutoSizeText("Статус: абитуриент"),
+            AutoSizeText("Статус: ${user.status}"),
           ],
         ),
       ],
