@@ -23,46 +23,46 @@ class FastActionsPanel extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)),
-          elevation: 4,
-          shadowColor: Colors.black.withOpacity(0.5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text(
-                      rating.toString(),
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w900, fontSize: 30),
-                    ),
-                    Text("Рейтинг",
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w800),)
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text(
-                      placeInRating.toString(),
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w900, fontSize: 30),
-                    ),
-                    Text("Место в рейтинге", style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w800),)
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+       // Card(
+       //   shape: RoundedRectangleBorder(
+       //       borderRadius: BorderRadius.circular(10)),
+       //   elevation: 4,
+       //   shadowColor: Colors.black.withOpacity(0.5),
+       //   child: Row(
+       //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+       //     children: [
+       //       Padding(
+       //         padding: const EdgeInsets.all(8.0),
+       //         child: Column(
+       //           children: [
+       //             Text(
+       //               rating.toString(),
+       //               style: GoogleFonts.montserrat(
+       //                   fontWeight: FontWeight.w900, fontSize: 30),
+       //             ),
+       //             Text("Рейтинг",
+       //               style: GoogleFonts.montserrat(
+       //                   fontWeight: FontWeight.w800),)
+       //           ],
+       //         ),
+       //       ),
+       //       Padding(
+       //         padding: const EdgeInsets.all(8.0),
+       //         child: Column(
+       //           children: [
+       //             Text(
+       //               placeInRating.toString(),
+       //               style: GoogleFonts.montserrat(
+       //                   fontWeight: FontWeight.w900, fontSize: 30),
+       //             ),
+       //             Text("Место в рейтинге", style: GoogleFonts.montserrat(
+       //                 fontWeight: FontWeight.w800),)
+       //           ],
+       //         ),
+       //       )
+       //     ],
+       //   ),
+       // ),
         SizedBox(
           height: 100,
           child: Row(

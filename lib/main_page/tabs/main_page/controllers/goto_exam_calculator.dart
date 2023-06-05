@@ -5,7 +5,7 @@ import '../widgets/ExamCalculatorPage.dart';
 
 class GotoExamCalculator {
     void execute(){
-      Get.to(()=>ExamCalculator());
+      Get.toNamed("/calculator");
       print("перешли на калькулятор экзаменов");
     }
 }

@@ -37,7 +37,7 @@ class AuthController{
   static Future<User?> _tryLoginOnServer(String login, String encryptedPassword) async {
     await Future.delayed(Duration(seconds: 1));
     //успешный вход
-    return User(0, 'Дарья Сергиенко', 'Абитуриент');
+    return User(0, 'Михаил К', 'Абитуриент');
   }
 
   static Future<User?> loginInApp(String login, String password) async {
@@ -50,5 +50,4 @@ class AuthController{
       return null;
     }
   }
-
 }

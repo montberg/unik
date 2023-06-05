@@ -9,14 +9,16 @@ class BottomNavBar extends StatelessWidget{
   Widget build(BuildContext context) {
     final BottomNavigationBarController c = Get.find();
     return Obx(() => BottomNavigationBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       onTap: c.changeTabIndex,
       currentIndex: c.tabIndex.value,
       unselectedItemColor: c.color.value.withOpacity(0.5),
       selectedItemColor: c.color.value,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      unselectedLabelStyle: Get.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w400, fontSize: 10),
-      selectedLabelStyle: Get.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w400, fontSize: 12),
+      unselectedLabelStyle: Get.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w400, fontSize: 12),
+      selectedLabelStyle: Get.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w800, fontSize: 15),
       items: [
         BottomNavigationBarItem(
           icon: Container(

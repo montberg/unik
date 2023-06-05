@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:unik/auth_page/User.dart';
 
@@ -8,6 +9,7 @@ import '../global_widgets/navigation_bar/controller/bottomNavigationBarControlle
 import '../global_widgets/navigation_bar/widgets/bottomNavigationBar.dart';
 import 'tabs/main_page/widgets/MainPage.dart';
 import 'tabs/profile_page/widgets/ProfilePage.dart';
+import 'tabs/universities/interfaces/IUniversityListLoader.dart';
 import 'tabs/universities/widgets/UniversitiesPage.dart';
 
 
@@ -21,6 +23,7 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
      // floatingActionButton: FloatingActionButton(
      //   child: Obx(() => Icon(c.icon.value)),
      //   onPressed: () {
@@ -29,6 +32,7 @@ class MainScaffold extends StatelessWidget {
      //     w.changeColor();
      //   },
      // ),
+      backgroundColor: Color(0xfff0efef),
       bottomNavigationBar:
           const BottomNavBar(),
       body: Obx(() => SafeArea(
@@ -37,8 +41,7 @@ class MainScaffold extends StatelessWidget {
           index: landingPageController.tabIndex.value,
           children: [
             MainPageWidget(user: user),
-            const UniversitiesPage(),
-           // const Placeholder(),
+            UniversitiesPage(filter: Filter()),
             ProfilePageWidget(user: user),
           ]
         ),

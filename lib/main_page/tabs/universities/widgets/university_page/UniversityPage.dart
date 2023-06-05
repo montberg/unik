@@ -1,13 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unik/global_widgets/CachedImage.dart';
 import 'package:unik/main_page/tabs/universities/University.dart';
 import 'package:unik/main_page/tabs/universities/widgets/university_page/widgets/UniversityContactInfoWidget.dart';
-import '../../../../../global_widgets/button.dart';
-import 'SpecialitiesPage.dart';
 import 'widgets/FastActionsPanel.dart';
 import 'widgets/InstituteListBuilder.dart';
 import 'widgets/UniversityDescriptionWidget.dart';
@@ -19,6 +16,7 @@ class UniversityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(university.id);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -110,7 +108,7 @@ class UniversityPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: InstitutesListBuilder(institutes: university.institutes as List<Institute>, universityName: university.name,),
+              child: InstitutesListBuilder(institutes: university.institutes as List<Institute>, universityName: university.name, universityId: university.id),
             ),
             const SizedBox(
               height: 20,

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:unik/auth_page/User.dart';
 
 class UserInfo extends StatelessWidget {
@@ -11,16 +12,13 @@ class UserInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Icon(
-          Icons.account_circle,
-          size: 100,
-        ),
+        Icon(Icons.person, size: 120),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AutoSizeText(user.name),
-            SizedBox(height: 10,),
-            AutoSizeText("Статус: ${user.status}"),
+            AutoSizeText("Привет, ${user.name.split(" ")[0]}!", style: GoogleFonts.montserrat(fontSize: 20),),
+            //SizedBox(height: 10,),
+            //AutoSizeText("Статус: ${user.status}"),
           ],
         ),
       ],

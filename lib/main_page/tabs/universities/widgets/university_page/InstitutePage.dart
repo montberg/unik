@@ -10,8 +10,9 @@ import 'widgets/UniversityContactInfoWidget.dart';
 class InstitutePage extends StatelessWidget {
   final Institute institute;
   final String universityName;
+  final int universityId;
   const InstitutePage(
-      {Key? key, required this.institute, required this.universityName})
+      {Key? key, required this.institute, required this.universityName, required this.universityId})
       : super(key: key);
 
   @override

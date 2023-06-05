@@ -40,7 +40,7 @@ class ProfilePageWidget extends StatelessWidget {
                   const SizedBox(height: 50),
                   Button(
                     icon: const Icon(
-                      Icons.account_circle_rounded,
+                      Icons.edit,
                       size: 40,
                     ),
                     child: Text("Редактировать профиль", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),

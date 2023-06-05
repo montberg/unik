@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ class ExamCalculator extends StatefulWidget {
   @override
   State<ExamCalculator> createState() => _ExamCalculatorState();
 }
+
 List<String> examNameList = const [
   "Русский язык",
   "Математика",
@@ -26,6 +29,7 @@ List<String> examNameList = const [
   "Иностранный язык",
   "Индивидуальные достижения",
 ];
+
 class _ExamCalculatorState extends State<ExamCalculator> {
   Future<List<int?>?> _loadPickedExams() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,9 +69,13 @@ class _ExamCalculatorState extends State<ExamCalculator> {
             print(snapshot.data);
             return snapshot.hasData
                 ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _ExamCalculator(points: snapshot.data!, exams: examNameList, dop: snapshot.data?.last,),
-                )
+                    padding: const EdgeInsets.all(8.0),
+                    child: _ExamCalculator(
+                      points: snapshot.data!,
+                      exams: examNameList,
+                      dop: snapshot.data?.last,
+                    ),
+                  )
                 : _ExamsPicker();
           }),
     );
@@ -75,7 +83,9 @@ class _ExamCalculatorState extends State<ExamCalculator> {
 }
 
 class _ExamCalculator extends StatelessWidget {
-  const _ExamCalculator({Key? key, required this.points, required this.exams, required this.dop}) : super(key: key);
+  const _ExamCalculator(
+      {Key? key, required this.points, required this.exams, required this.dop})
+      : super(key: key);
   final int? dop;
   final List<int?> points;
   final List<String> exams;
@@ -83,17 +93,22 @@ class _ExamCalculator extends StatelessWidget {
   Widget build(BuildContext context) {
     List<List<int>> result = [];
     List<List<String>> examsNames = [];
-    for (int i = 2; i < points.length-1; i++) {
+    for (int i = 2; i < points.length - 1; i++) {
       if (points[i] != null) {
-        result.add([points[0] ?? 0, points[1]??0, points[i]??0]);
+        result.add([points[0] ?? 0, points[1] ?? 0, points[i] ?? 0]);
         examsNames.add([exams[0], exams[1], exams[i]]);
       }
     }
     return Scaffold(
-      body: GridView.builder(itemBuilder: (context, index) {
-        return ExamsCard(exams: examsNames[index], points: result[index], dop: dop);
-      },
-      itemCount: result.length, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),),
+      body: GridView.builder(
+        itemBuilder: (context, index) {
+          return ExamsCard(
+              exams: examsNames[index], points: result[index], dop: dop);
+        },
+        itemCount: result.length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.blue,
         onPressed: () async {
@@ -160,7 +175,7 @@ class _ExamsPicker extends StatelessWidget {
               for (int i = 0; i < controllers.length - 1; i++) {
                 if (controllers[i].text.isNotEmpty) counter++;
               }
-              if(controllers[0].text.isEmpty || controllers[1].text.isEmpty ){
+              if (controllers[0].text.isEmpty || controllers[1].text.isEmpty) {
                 Get.snackbar(
                   "Ошибка",
                   "Русский язык и математика обязательны для заполнения",
@@ -191,8 +206,6 @@ class _ExamsPicker extends StatelessWidget {
                 Get.snackbar(
                   "Ошибка",
                   "Как минимум три поля должны быть заполнены",
-                  //icon: Icon(Icons.person, color: Colors.white),
-                  //padding: EdgeInsets.all(16),
                   isDismissible: true,
                   snackPosition: SnackPosition.BOTTOM,
                   backgroundColor: Colors.red,

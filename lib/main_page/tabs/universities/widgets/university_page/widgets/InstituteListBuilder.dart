@@ -12,11 +12,14 @@ class InstitutesListBuilder extends StatelessWidget {
   final List<Institute>? institutes;
 
   final String universityName;
-  const InstitutesListBuilder({Key? key, required this.institutes, required this.universityName})
+
+  final int universityId;
+  const InstitutesListBuilder({Key? key, required this.institutes, required this.universityName, required this.universityId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(universityId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,14 +34,14 @@ class InstitutesListBuilder extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        institutes != null ? _buildSpecialities(institutes, universityName) : const SizedBox()
+        institutes != null ? _buildSpecialities(institutes, universityName, universityId) : const SizedBox()
       ],
     );
   }
 
-  Column _buildSpecialities(List<Institute>? institutes, String universityName) {
+  Column _buildSpecialities(List<Institute>? institutes, String universityName, int universityId) {
     List<Widget> _instituteWidgetList = [];
-    if(institutes==null) return Column(children: [],);
+    if(institutes==null) return Column(children: []);
     for (int i = 0; i < institutes.length; i++) {
       _instituteWidgetList.add(Button(
         isChevronBlack: true,
@@ -48,15 +51,15 @@ class InstitutesListBuilder extends StatelessWidget {
           if (kDebugMode) {
             print(institutes[i].name);
           }
-          _goToInstitutePage(institutes[i], universityName);
+          _goToInstitutePage(institutes[i], universityName, universityId);
         },
       ));
     }
     return Column(children: _instituteWidgetList);
   }
 
-  void _goToInstitutePage(Institute institute, String universityName) {
-    Get.to(InstitutePage(institute: institute, universityName: universityName,));
+  void _goToInstitutePage(Institute institute, String universityName, int id) {
+    Get.to(InstitutePage(institute: institute, universityName: universityName, universityId: id,));
   }
 }
 

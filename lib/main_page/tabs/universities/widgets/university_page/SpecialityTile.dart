@@ -23,22 +23,81 @@ class SpecialityTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Card(
+    List<Widget> result = [];
+    speciality?.points.forEach((key, value) {
+      result.add(Text("$key:$value"));
+    });
+
+    return Material(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      margin: EdgeInsets.zero,
-      child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        tileColor: Colors.white,
-        title: AutoSizeText("$code $title",
-            style: GoogleFonts.montserrat(fontSize: 17), maxLines: 3),
-        subtitle: speciality==null ? null : Text("~${speciality?.price} руб.", style: GoogleFonts.montserrat(fontSize: 15)),
+      //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
-          if(speciality!=null) {
+          if (speciality != null) {
             Get.to(SpecialityPage(speciality: speciality!));
           }
         },
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: 250,
+                          child: AutoSizeText("$code \n$title",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16, fontWeight: FontWeight.w800),
+                              maxLines: 5),
+                        ),
+                      ],
+                    ),
+                    FloatingActionButton(
+                        onPressed: () {
+                          print(id);
+                        },
+                        child: Icon(Icons.favorite_border_outlined)),
+                  ],
+                ),
+                Text("~${speciality?.price} руб.",
+                    style: GoogleFonts.montserrat(fontSize: 15)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("2022"),
+                          SizedBox(height: 10,),
+                          ...result
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

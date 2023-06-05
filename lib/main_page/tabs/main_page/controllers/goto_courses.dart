@@ -4,7 +4,6 @@ import 'package:unik/global_widgets/navigation_bar/controller/bottomNavigationBa
 class GotoUniversities {
     void execute(){
       //Get.to(NextScreen());
-
       final BottomNavigationBarController c = Get.find();
       c.changeTabIndex(1);
       print("перешли к универам");

@@ -7,7 +7,7 @@ import '../University.dart';
 import '../widgets/UniversityCard.dart';
 class UniversityListLoader extends IUniversityListLoader{
   @override
-  Future<List<Widget>> loadList() async {
+  Future<List<Widget>> loadList(Filter filter) async {
     final universitiesJson = json.decode(await fetchData());
     List<dynamic> listOfData = universitiesJson.map((json) => University.fromJson(json)).toList();
     return listOfData.map((e) => UniversityCard(universityCardInfo: UniversityCardInfo(university: e, favourite: false))).toList();

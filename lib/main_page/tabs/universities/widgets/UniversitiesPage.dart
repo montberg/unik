@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:unik/main_page/tabs/universities/controllers/FakeUniversityListLoader.dart';
-import 'package:unik/main_page/tabs/universities/widgets/UniversityCard.dart';
 import '../controllers/FakeSpecialityListLoader.dart';
-import '../controllers/UniversityListLoader.dart';
 import '../interfaces/IUniversityListLoader.dart';
 import 'FilterMenu.dart';
 
@@ -22,8 +21,8 @@ class ExpansionController extends GetxController {
 }
 
 class UniversitiesPage extends StatefulWidget {
-  const UniversitiesPage({Key? key}) : super(key: key);
-
+  final Filter filter;
+  const UniversitiesPage({Key? key, required this.filter}) : super(key: key);
   @override
   State<UniversitiesPage> createState() => _UniversitiesPageState();
 }
@@ -32,12 +31,10 @@ class _UniversitiesPageState extends State<UniversitiesPage>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  //late bool _isOpen;
   late RxInt currentPageIndex;
   @override
   void initState() {
     super.initState();
-    //_isOpen = false;
     currentPageIndex = 0.obs;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 100),
@@ -58,22 +55,26 @@ class _UniversitiesPageState extends State<UniversitiesPage>
     }
   }
 
-  _changePage(index){
-      currentPageIndex.value = index;
+  _changePage(index) {
+    currentPageIndex.value = index;
   }
 
   @override
   Widget build(BuildContext context) {
     final searchController = TextEditingController();
     final IUniversityListLoader loader = FakeUniversityListLoader();
+    final ISpecialityListLoader specialityListLoader = FakeSpecialityListLoader();
+    final Rx<FilterMenu> _filterMenu = FilterMenu(onStateSelected: _changePage, loader: loader, filter: widget.filter.obs, specialityListLoader: specialityListLoader).obs;
     return SafeArea(
-      top: true,
+      top: false,
       child: Scaffold(
+        backgroundColor: Color(0xfff0efef),
         appBar: AppBar(
           elevation: 0,
           title: Text(
             "ВУЗЫ",
-            style: Get.theme.textTheme.button,
+            style: GoogleFonts.montserrat(
+                fontWeight: FontWeight.w900, fontSize: 20, color: Colors.black),
           ),
           centerTitle: true,
           bottom: PreferredSize(
@@ -82,20 +83,19 @@ class _UniversitiesPageState extends State<UniversitiesPage>
               children: [
                 Expanded(
                     child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: searchController,
-                    onEditingComplete: () {},
-                    decoration: InputDecoration(
-                        hintText: "Поиск",
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              searchController.clear();
-                            },
-                            icon: const Icon(Icons.clear))),
-                  ))
-                ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: searchController,
+                          onEditingComplete: () {},
+                          decoration: InputDecoration(
+                              hintText: "Поиск",
+                              prefixIcon: const Icon(Icons.search),
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    searchController.clear();
+                                  },
+                                  icon: const Icon(Icons.clear))),
+                        ))),
                 Obx(() => IconButton(
                     icon: ExpansionController.isExpanded.value
                         ? const Icon(
@@ -118,38 +118,40 @@ class _UniversitiesPageState extends State<UniversitiesPage>
           children: [
             Obx(()=>
                FutureBuilder<List<Widget>>(
-                  future:
-                      _loadList(currentPageIndex.value == 0 ? loader : FakeSpecialityListLoader()),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      debugPrint(snapshot.error.toString());
-                      return Column(
-                        children: [Text("Что-то пошло не так..."), Text(snapshot.error.toString())],
-                      );
-                    } else if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        if (kDebugMode) {
-                          print("hasdata");
-                        }
-                        return GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            child: SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              child: Column(
-                                children: snapshot.data ?? [],
-                              ),
-                            )
+                    future: _filterMenu.value.loadUniversities(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        debugPrint(snapshot.error.toString());
+                        return Column(
+                          children: [
+                            Text("Что-то пошло не так..."),
+                            Text(snapshot.error.toString())
+                          ],
                         );
-                      } else {
-                        if (kDebugMode) {
-                          print('error');
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          if (kDebugMode) {
+                            print("hasdata");
+                          }
+                          return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              child: SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                child: Column(
+                                  children: snapshot.data ?? [],
+                                ),
+                              ));
+                        } else {
+                          if (kDebugMode) {
+                            print('error');
+                          }
+                          return const Icon(Icons.error);
                         }
-                        return const Icon(Icons.error);
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
                       }
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
+                    }),
             ),
             Obx(
               () => GestureDetector(
@@ -169,16 +171,14 @@ class _UniversitiesPageState extends State<UniversitiesPage>
             SizeTransition(
                 sizeFactor: _animation,
                 axis: Axis.vertical,
-                child: FilterMenu(onStateSelected: _changePage,)),
+                child: _filterMenu.value),
           ],
         ),
       ),
     );
   }
 
-  Future<List<Widget>> _loadList(IUniversityListLoader loader) {
-    return loader.loadList();
+  Future<List<Widget>> _loadList(IUniversityListLoader loader, Filter filter) {
+    return loader.loadList(filter);
   }
 }
-
-

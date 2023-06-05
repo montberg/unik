@@ -1,12 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:get/get.dart';
 
-const List<String> list = <String>['не важно', 'да', 'нет'];
+import '../interfaces/IUniversityListLoader.dart';
 
+
+final List<String> list = <String>['не важно', 'да', 'нет'];
 class FilterMenu extends StatelessWidget {
-  const FilterMenu({Key? key, required this.onStateSelected}) : super(key: key);
+  final Rx<Filter> filter;
+  final IUniversityListLoader loader;
+  final ISpecialityListLoader specialityListLoader;
+  const FilterMenu({
+    Key? key,
+    required this.onStateSelected,
+    required this.filter,
+    required this.loader,
+    required this.specialityListLoader,
+  }) : super(key: key);
   final Function(int) onStateSelected;
+
+  Future<List<Widget>> loadUniversities() {
+    return loader.loadList(filter.value);
+  }
+
+  Future<List<Widget>> loadSpecialities() {
+    return specialityListLoader.loadList(filter: filter?.value);
+  }
+
+
+  int getIndexByValue(bool? value){
+    switch(value){
+      case(null): return 0;
+      case(true): return 1;
+      case(false): return 2;
+    }
+    return 0;
+  }
+
+  bool? getValueByText(String value){
+    switch(value){
+      case('не важно'): return null;
+      case('да'): return true;
+      case('нет'): return false;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +54,11 @@ class FilterMenu extends StatelessWidget {
     var accreditationSelectedValue = list.first.obs;
     var dormsSelectedValue = list.first.obs;
     var citySearchController = TextEditingController();
-
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(
             color: Get.theme.appBarTheme.backgroundColor,
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
+            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20))),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -42,26 +81,35 @@ class FilterMenu extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              const Text("Поиск по"),
-              SizedBox(height: 10),
-              Center(
-                child: ToggleSwitch(
-                  minWidth: double.infinity,
-                  fontSize: 14.0,
-                  animate: true,
-                  animationDuration: 100,
-                  initialLabelIndex: 0,
-                  borderWidth: 1,
-                  borderColor: [Colors.black26],
-                  activeBgColor: [Colors.blue],
-                  activeFgColor: Colors.white,
-                  inactiveBgColor: Colors.white,
-                  inactiveFgColor: Get.textTheme.button!.color,
-                  totalSwitches: 2,
-                  labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
-                  onToggle: (index) {
-                    onStateSelected(index!);
-                  },
+              Visibility(
+                child: const Text("Поиск по"),
+                visible: filter?.value?.points == null,
+              ),
+              Visibility(
+                child: SizedBox(height: 10),
+                visible: filter?.value?.points == null,
+              ),
+              Visibility(
+                visible: filter?.value?.points == null,
+                child: Center(
+                  child: ToggleSwitch(
+                    minWidth: double.infinity,
+                    fontSize: 14.0,
+                    animate: true,
+                    animationDuration: 100,
+                    initialLabelIndex: 0,
+                    borderWidth: 1,
+                    borderColor: [Colors.black26],
+                    activeBgColor: [Colors.blue],
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.white,
+                    inactiveFgColor: Get.textTheme.button!.color,
+                    totalSwitches: 2,
+                    labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
+                    onToggle: (index) {
+                      onStateSelected(index!);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(
@@ -72,25 +120,28 @@ class FilterMenu extends StatelessWidget {
                 children: [
                   const Text("Военная кафедра"),
                   Obx(() => DropdownButton<String>(
-                    value: milSelectedValue.value,
-                    icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (String? value) {
-                      milSelectedValue.value = value!;
-                    },
-                    items: list
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ))
+                        value: milSelectedValue.value,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? value) {
+                          milSelectedValue.value = value!;
+                          filter?.update((val) {
+                            filter?.value?.militartdepartament = getValueByText(value);
+                          });
+                        },
+                        items:
+                            list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ))
                 ],
               ),
               const Divider(),
@@ -99,26 +150,27 @@ class FilterMenu extends StatelessWidget {
                 children: [
                   const Text("Аккредитация"),
                   Obx(() => DropdownButton<String>(
-                    value: accreditationSelectedValue.value,
-                    icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (String? value) {
-                      accreditationSelectedValue.value = value!;
-                    },
-                    items: list
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ))
-                ],
+                        value: accreditationSelectedValue.value,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? value) {
+                          accreditationSelectedValue.value = value!;
+                          filter?.update((val) {
+                            filter?.value?.accreditation = getValueByText(value);
+                          });
+                        },
+                        items: list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ))],
               ),
               const Divider(),
               Row(
@@ -126,26 +178,77 @@ class FilterMenu extends StatelessWidget {
                 children: [
                   const Text("Общежитие"),
                   Obx(() => DropdownButton<String>(
-                    value: dormsSelectedValue.value,
-                    icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (String? value) {
-                      dormsSelectedValue.value = value!;
-                    },
-                    items: list
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ))
+                        value: dormsSelectedValue.value,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? value) {
+                          dormsSelectedValue.value = value!;
+                          filter?.update((val) {
+                            filter?.value?.dorms = getValueByText(value);
+                          });
+                        },
+                        items:
+                            list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ))
                 ],
+              ),
+              Obx(() => Visibility(
+                    child: const Divider(),
+                    visible: filter?.value?.points != null,
+                  )),
+              Obx(
+                () => Visibility(
+                  visible: filter?.value?.points != null,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: (() {
+                              List<Widget> pointList = [];
+                              filter?.value?.points?.forEach((key, value) {
+                                pointList.add(Text(
+                                  "$key : $value",
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ));
+                              });
+                              return pointList;
+                            }()),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                filter?.update((val) {
+                                  filter?.value?.points = null;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.clear,
+                                color: Colors.white,
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const Divider(),
               TextButton(
@@ -155,17 +258,26 @@ class FilterMenu extends StatelessWidget {
                     textStyle: Get.theme.textTheme.button!
                         .copyWith(color: Colors.white)),
                 child: Container(
-                  child: Text("ПРИМЕНИТЬ", style: Get.theme.textTheme.button?.copyWith(color: Colors.white)),
+                  child: Text("ПРИМЕНИТЬ",
+                      style: Get.theme.textTheme.button
+                          ?.copyWith(color: Colors.white)),
                   width: double.infinity,
                   alignment: Alignment.center,
                 ),
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               TextButton(
                 onPressed: () {
                   milSelectedValue.value = list.first;
                   accreditationSelectedValue.value = list.first;
                   dormsSelectedValue.value = list.first;
+                  filter?.update((val) {
+                    filter?.value?.militartdepartament = getValueByText(list.first);
+                    filter?.value?.accreditation = getValueByText(list.first);
+                    filter?.value?.dorms = getValueByText(list.first);
+                  });
                 },
                 style: TextButton.styleFrom(
                     side: BorderSide(width: 1, color: Colors.black26)),
