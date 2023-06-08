@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:get/get.dart';
-
 import '../interfaces/IUniversityListLoader.dart';
 
 
@@ -26,7 +24,7 @@ class FilterMenu extends StatelessWidget {
   }
 
   Future<List<Widget>> loadSpecialities() {
-    return specialityListLoader.loadList(filter: filter?.value);
+    return specialityListLoader.loadList(filter: filter.value);
   }
 
 
@@ -83,14 +81,14 @@ class FilterMenu extends StatelessWidget {
               SizedBox(height: 10),
               Visibility(
                 child: const Text("Поиск по"),
-                visible: filter?.value?.points == null,
+                visible: filter.value.points == null,
               ),
               Visibility(
                 child: SizedBox(height: 10),
-                visible: filter?.value?.points == null,
+                visible: filter.value.points == null,
               ),
               Visibility(
-                visible: filter?.value?.points == null,
+                visible: filter.value.points == null,
                 child: Center(
                   child: ToggleSwitch(
                     minWidth: double.infinity,
@@ -103,7 +101,7 @@ class FilterMenu extends StatelessWidget {
                     activeBgColor: [Colors.blue],
                     activeFgColor: Colors.white,
                     inactiveBgColor: Colors.white,
-                    inactiveFgColor: Get.textTheme.button!.color,
+                    inactiveFgColor: Get.textTheme.labelLarge!.color,
                     totalSwitches: 2,
                     labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
                     onToggle: (index) {
@@ -130,8 +128,8 @@ class FilterMenu extends StatelessWidget {
                         ),
                         onChanged: (String? value) {
                           milSelectedValue.value = value!;
-                          filter?.update((val) {
-                            filter?.value?.militartdepartament = getValueByText(value);
+                          filter.update((val) {
+                            filter.value.militartdepartament = getValueByText(value);
                           });
                         },
                         items:
@@ -160,8 +158,8 @@ class FilterMenu extends StatelessWidget {
                         ),
                         onChanged: (String? value) {
                           accreditationSelectedValue.value = value!;
-                          filter?.update((val) {
-                            filter?.value?.accreditation = getValueByText(value);
+                          filter.update((val) {
+                            filter.value.accreditation = getValueByText(value);
                           });
                         },
                         items: list.map<DropdownMenuItem<String>>((String value) {
@@ -188,8 +186,8 @@ class FilterMenu extends StatelessWidget {
                         ),
                         onChanged: (String? value) {
                           dormsSelectedValue.value = value!;
-                          filter?.update((val) {
-                            filter?.value?.dorms = getValueByText(value);
+                          filter.update((val) {
+                            filter.value.dorms = getValueByText(value);
                           });
                         },
                         items:
@@ -204,11 +202,11 @@ class FilterMenu extends StatelessWidget {
               ),
               Obx(() => Visibility(
                     child: const Divider(),
-                    visible: filter?.value?.points != null,
+                    visible: filter.value.points != null,
                   )),
               Obx(
                 () => Visibility(
-                  visible: filter?.value?.points != null,
+                  visible: filter.value.points != null,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.blue,
@@ -223,7 +221,7 @@ class FilterMenu extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: (() {
                               List<Widget> pointList = [];
-                              filter?.value?.points?.forEach((key, value) {
+                              filter.value.points?.forEach((key, value) {
                                 pointList.add(Text(
                                   "$key : $value",
                                   style: GoogleFonts.montserrat(
@@ -236,8 +234,8 @@ class FilterMenu extends StatelessWidget {
                           ),
                           IconButton(
                               onPressed: () {
-                                filter?.update((val) {
-                                  filter?.value?.points = null;
+                                filter.update((val) {
+                                  filter.value.points = null;
                                 });
                               },
                               icon: const Icon(
@@ -255,11 +253,11 @@ class FilterMenu extends StatelessWidget {
                 onPressed: () {},
                 style: TextButton.styleFrom(
                     backgroundColor: Colors.blue,
-                    textStyle: Get.theme.textTheme.button!
+                    textStyle: Get.theme.textTheme.labelLarge!
                         .copyWith(color: Colors.white)),
                 child: Container(
                   child: Text("ПРИМЕНИТЬ",
-                      style: Get.theme.textTheme.button
+                      style: Get.theme.textTheme.labelLarge
                           ?.copyWith(color: Colors.white)),
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -273,16 +271,16 @@ class FilterMenu extends StatelessWidget {
                   milSelectedValue.value = list.first;
                   accreditationSelectedValue.value = list.first;
                   dormsSelectedValue.value = list.first;
-                  filter?.update((val) {
-                    filter?.value?.militartdepartament = getValueByText(list.first);
-                    filter?.value?.accreditation = getValueByText(list.first);
-                    filter?.value?.dorms = getValueByText(list.first);
+                  filter.update((val) {
+                    filter.value.militartdepartament = getValueByText(list.first);
+                    filter.value.accreditation = getValueByText(list.first);
+                    filter.value.dorms = getValueByText(list.first);
                   });
                 },
                 style: TextButton.styleFrom(
                     side: BorderSide(width: 1, color: Colors.black26)),
                 child: Container(
-                  child: Text("СБРОС", style: Get.theme.textTheme.button),
+                  child: Text("СБРОС", style: Get.theme.textTheme.labelLarge),
                   width: double.infinity,
                   alignment: Alignment.center,
                 ),

@@ -108,4 +108,26 @@ class Speciality {
       required this.price,
       required this.degree,
       required this.points});
+
+  factory Speciality.fromJson(Map<String, dynamic> json) {
+    var pointsMap = json['points'] != null
+        ? Map<String, int>.from(json['points'])
+        : new Map<String, int>();
+
+    return Speciality(
+      id: json['id'],
+      name: json['name'],
+      code: json['code'],
+      description: json['description'],
+      price: json['price'],
+      degree: Degree.bachelor,
+      points: pointsMap,
+    );
+
+
+  }
+
 }
+
+
+

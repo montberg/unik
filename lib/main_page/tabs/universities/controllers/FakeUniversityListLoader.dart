@@ -111,6 +111,7 @@ List<Institute> institutes = [
       instituteContacts: contacts,
       id: 2)
 ];
+List<UniversityCard> temp = [];
 List<UniversityCard> a = [
   UniversityCard(
       universityCardInfo: UniversityCardInfo(
@@ -182,6 +183,7 @@ class FakeUniversityListLoader implements IUniversityListLoader {
       print("begun check!");
       int matchingKeysCount = 0;
       for (String key in mapA.keys) {
+        if(mapB[key]!=null){
         if (mapA.containsKey(key) && mapB[key]! <= mapA[key]!) {
           print("вуз MapB[$key] ${mapB[key]}");
           print("мы MapA[$key] ${mapA[key]}");
@@ -190,7 +192,7 @@ class FakeUniversityListLoader implements IUniversityListLoader {
             print(">=3");
             return true;
           }
-        }
+        }}
       }
       return false;
     }
@@ -201,7 +203,8 @@ class FakeUniversityListLoader implements IUniversityListLoader {
       print('sending...');
 
       print("accreditaion filter = ${filter.accreditation}");
-      a = a
+      temp =
+       a
           .where((card) =>
               (filter.militartdepartament == null ||
                   card.universityCardInfo.university.militarydep ==
@@ -233,6 +236,6 @@ class FakeUniversityListLoader implements IUniversityListLoader {
           .toList();
     }
     return Future<List<UniversityCard>>.delayed(
-        const Duration(seconds: 1), () => a);
+        const Duration(seconds: 1), () => temp);
   }
 }

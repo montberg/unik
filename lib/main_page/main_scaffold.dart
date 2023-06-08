@@ -41,7 +41,7 @@ class MainScaffold extends StatelessWidget {
           index: landingPageController.tabIndex.value,
           children: [
             MainPageWidget(user: user),
-            UniversitiesPage(filter: Filter()),
+            UniversitiesPage(filter: Filter(points: null)),
             ProfilePageWidget(user: user),
           ]
         ),
