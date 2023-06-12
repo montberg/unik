@@ -50,17 +50,17 @@ class ProfilePageWidget extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Button(
-                    icon: const Icon(
-                      Icons.star,
-                      size: 40,
-                    ),
-                    child: Text("Избранное", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
-                    onPressed: () => gotoSaved.execute(), isChevronBlack: true,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                 // Button(
+                 //   icon: const Icon(
+                 //     Icons.star,
+                 //     size: 40,
+                 //   ),
+                 //   child: Text("Избранное", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
+                 //   onPressed: () => gotoSaved.execute(), isChevronBlack: true,
+                 // ),
+                 // const SizedBox(
+                 //   height: 20,
+                 // ),
                   Button(
                       icon: const Icon(
                         Icons.logout_rounded,

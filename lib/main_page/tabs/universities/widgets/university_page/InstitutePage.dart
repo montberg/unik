@@ -59,7 +59,7 @@ class InstitutePage extends StatelessWidget {
               ),
               ListView.separated(
                 itemBuilder: (context, index) {
-                  return SpecialityTile.bySpeciality(institute.specialities[index]);
+                  return SpecialityTile.bySpeciality(institute.specialities[index], universityId);
                 },
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),

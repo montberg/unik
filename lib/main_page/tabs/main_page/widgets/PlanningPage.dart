@@ -29,13 +29,15 @@ class PlanningCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     List<Widget> resultUniversity = [];
     List<String?> listString = [];
     data.points.forEach((key, value) {
       resultUniversity.add(Text("$key:$value"));
       listString.add(key);
     });
-
+    List<dynamic> sums = [];
+    int maxSum = 0;
     Future<void> _loadPickedExams() async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       Map<String, dynamic> output = {};
@@ -46,9 +48,20 @@ class PlanningCard extends StatelessWidget {
           output[examNameList[i]] = list[i];
         }
         resultUser.clear();
-        print(output);
-        print(data.points);
-
+        //print(data.subjects);
+        //print(output);
+        List<Map<String, dynamic>> outputList = [];
+        output.forEach((key, value) {
+          if(key!="Математика" && key!="Русский язык" && value != ""){
+            outputList.add({key:value});
+          }
+        });
+       //print(outputList);
+        outputList.forEach((element) {
+          element["Математика"] = output["Математика"];
+          element["Русский язык"] = output["Русский язык"];
+        });
+        //print(outputList);
         Map<String, dynamic> thirdMap = {};
 
 
@@ -57,16 +70,45 @@ class PlanningCard extends StatelessWidget {
             thirdMap[key] = output[key];
           }
         });
-
-        print(thirdMap);
+        //print(thirdMap);
         thirdMap.forEach((key, value) {
           resultUser.add(Text("$value"));
-          //listString.add(key);
         });
+        List<Map<String, dynamic>> result = [];
 
+        for (Map<String, dynamic> map in outputList) {
+          bool match = true;
+          for (String key in data.subjects) {
+            if (!map.containsKey(key)) {
+              match = false;
+              break;
+            }
+          }
+          if (match) {
+            print(match);
+            result.add(map);
+          }
+        }
+        for (var element in outputList) {
+          element.forEach((key, value) {
+            if(key!="Русский язык" && key!="Математика" && data.subjects.contains(key)){
+              result.add(element);
+            }
+          });
+        }
+       // print(result);
+
+        for (Map<String, dynamic> item in result) {
+          int sum = 0;
+          item.forEach((key, value) {
+              sum += int.parse(value);
+          });
+          if (sum >= maxSum) {
+            maxSum = sum;
+          }
+        }
       }
     }
-
     return FutureBuilder(
         future: _loadPickedExams(),
         builder: (context, snapshot) {
@@ -119,7 +161,20 @@ class PlanningCard extends StatelessWidget {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  ...resultUniversity
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Бюджетный набор: "),
+                                      Text(data.pointsSumBudget.toString(), style: GoogleFonts.montserrat(fontWeight: FontWeight.w800),),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Общий набор: "),
+                                      Text(data.pointsSum.toString(), style: GoogleFonts.montserrat(fontWeight: FontWeight.w800),),
+                                    ],
+                                  ),
                                 ],
                               ),
                               Column(
@@ -127,9 +182,13 @@ class PlanningCard extends StatelessWidget {
                                 children: [
                                   Text("Ваши баллы"),
                                   SizedBox(
+                                    height: 15,
+                                  ),
+                                  //...resultUser
+                                  Text("$maxSum", style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, fontSize: 25)),
+                                  SizedBox(
                                     height: 10,
                                   ),
-                                  ...resultUser
                                 ],
                               ),
                             ],
@@ -144,6 +203,7 @@ class PlanningCard extends StatelessWidget {
           );
         });
   }
+
 }
 
 class PlanningPage extends StatefulWidget {
@@ -160,7 +220,10 @@ class _PlanningPageState extends State<PlanningPage> {
     List<String>? a = prefs.getStringList("savedSpecs");
     a?.forEach((element) {
       children
-          .add(PlanningCard(data: Speciality.fromJson(jsonDecode(element))));
+          .add(Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: PlanningCard(data: Speciality.fromJson(jsonDecode(element))),
+          ));
     });
     return children;
   }
@@ -175,12 +238,21 @@ class _PlanningPageState extends State<PlanningPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //floatingActionButton: FloatingActionButton(
+      //  onPressed: () async {
+      //    final SharedPreferences prefs = await SharedPreferences.getInstance();
+      //    prefs.clear();
+      //  },
+      //),
       appBar: AppBar(
         automaticallyImplyLeading: true,
         leading: BackButton(
           color: Colors.black,
         ),
-        title: Text("Планировщик поступления"),
+        title: AutoSizeText("Планировщик поступления",
+            style: GoogleFonts.montserrat(
+                fontSize: 24, fontWeight: FontWeight.w800, color: Colors.black),
+            maxLines: 1),
       ),
       body: FutureBuilder<List<Widget>>(
           future: loadList(),

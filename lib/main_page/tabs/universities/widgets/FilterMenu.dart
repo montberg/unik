@@ -78,38 +78,38 @@ class FilterMenu extends StatelessWidget {
                           icon: const Icon(Icons.clear))),
                 ),
               ),
-              SizedBox(height: 10),
-              Visibility(
-                child: const Text("Поиск по"),
-                visible: filter.value.points == null,
-              ),
-              Visibility(
-                child: SizedBox(height: 10),
-                visible: filter.value.points == null,
-              ),
-              Visibility(
-                visible: filter.value.points == null,
-                child: Center(
-                  child: ToggleSwitch(
-                    minWidth: double.infinity,
-                    fontSize: 14.0,
-                    animate: true,
-                    animationDuration: 100,
-                    initialLabelIndex: 0,
-                    borderWidth: 1,
-                    borderColor: [Colors.black26],
-                    activeBgColor: [Colors.blue],
-                    activeFgColor: Colors.white,
-                    inactiveBgColor: Colors.white,
-                    inactiveFgColor: Get.textTheme.labelLarge!.color,
-                    totalSwitches: 2,
-                    labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
-                    onToggle: (index) {
-                      onStateSelected(index!);
-                    },
-                  ),
-                ),
-              ),
+              //SizedBox(height: 10),
+              //Visibility(
+              //  child: const Text("Поиск по"),
+              //  visible: filter.value.points == null,
+              //),
+              //Visibility(
+              //  child: SizedBox(height: 10),
+              //  visible: filter.value.points == null,
+              //),
+              //Visibility(
+              //  visible: filter.value.points == null,
+              //  child: Center(
+              //    child: ToggleSwitch(
+              //      minWidth: double.infinity,
+              //      fontSize: 14.0,
+              //      animate: true,
+              //      animationDuration: 100,
+              //      initialLabelIndex: 0,
+              //      borderWidth: 1,
+              //      borderColor: [Colors.black26],
+              //      activeBgColor: [Colors.blue],
+              //      activeFgColor: Colors.white,
+              //      inactiveBgColor: Colors.white,
+              //      inactiveFgColor: Get.textTheme.labelLarge!.color,
+              //      totalSwitches: 2,
+              //      labels: ['ВУЗАМ', 'СПЕЦИАЛЬНОСТЯМ'],
+              //      onToggle: (index) {
+              //        onStateSelected(index!);
+              //      },
+              //    ),
+              //  ),
+              //),
               const SizedBox(
                 height: 10,
               ),

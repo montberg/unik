@@ -63,27 +63,27 @@ class _UniversityCardState extends State<UniversityCard> {
                           const BorderRadius.vertical(top: Radius.circular(10)),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.universityCardInfo.favourite =
-                        !widget.universityCardInfo.favourite;
-                      });
-                    },
-                    icon: Stack(
-                      children: [
-                        const Positioned(
-                          left: 1.0,
-                          top: 2.0,
-                          child: Icon(Icons.favorite, color: Colors.black54),
-                        ),
-                        Icon(Icons.favorite,
-                            color: widget.universityCardInfo.favourite
-                                ? Colors.red
-                                : Colors.white),
-                      ],
-                    ),
-                  )
+                  //IconButton(
+                  //  onPressed: () {
+                  //    setState(() {
+                  //      widget.universityCardInfo.favourite =
+                  //      !widget.universityCardInfo.favourite;
+                  //    });
+                  //  },
+                  //  icon: Stack(
+                  //    children: [
+                  //      const Positioned(
+                  //        left: 1.0,
+                  //        top: 2.0,
+                  //        child: Icon(Icons.favorite, color: Colors.black54),
+                  //      ),
+                  //      Icon(Icons.favorite,
+                  //          color: widget.universityCardInfo.favourite
+                  //              ? Colors.red
+                  //              : Colors.white),
+                  //    ],
+                  //  ),
+                  //)
                 ],
               ),
               Padding(

@@ -409,7 +409,6 @@ class _TestPageState extends State<TestPage> {
   void _goBack(int index) {
     setState(() {
       var lastAnswer = selectedAnswers[currentQuestion];
-      //selectedAnswers[currentQuestion] = SelectedAnswer(currentQuestion, -1);
       columns[questionList[currentQuestion - 1]
           .indexes[selectedAnswers[currentQuestion - 1].answer]]--;
       currentQuestion--;

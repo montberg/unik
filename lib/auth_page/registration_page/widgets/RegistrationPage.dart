@@ -18,7 +18,7 @@ class RegistrationPage extends StatelessWidget {
           key: _formKey,
           child: SizedBox(
             width: 300,
-            height: 430,
+            height: 500,
             child: Card(
               elevation: 20,
               shape: RoundedRectangleBorder(
@@ -32,6 +32,22 @@ class RegistrationPage extends StatelessWidget {
                       "РЕГИСТРАЦИЯ",
                       style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w800, fontSize: 22),
+                    ),
+                    TextFormField(
+                      controller: _loginController,
+                      decoration: InputDecoration(
+                          hintText: "Как тебя зовут?",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      style: GoogleFonts.montserrat(
+                          fontSize: 19, fontWeight: FontWeight.w500),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Поле не может быть пустым";
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
                     ),
                     TextFormField(
                       controller: _loginController,

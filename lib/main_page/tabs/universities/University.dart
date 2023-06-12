@@ -90,44 +90,58 @@ class Contacts {
 enum Degree { bachelor, specialty, master }
 
 class Speciality {
-
   final int id;
   final Degree degree;
   final double price;
   final String description;
   final String code;
   final String name;
+  final int pointsSumBudget;
+  final int pointsSum;
+  final List<String> subjects;
   final Map<String, int> points;
 
   const Speciality(
-
-      {required this.id,
-        required this.name,
+      {required this.subjects,
+        required this.id,
+      required this.name,
+      required this.pointsSumBudget,
+      required this.pointsSum,
       required this.code,
       required this.description,
       required this.price,
       required this.degree,
       required this.points});
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'degree': degree.toString().split('.').last,
+        'price': price,
+        'description': description,
+        'code': code,
+        'name': name,
+        'points': points,
+        'pointsSum': pointsSum,
+        'pointsSumBudget': pointsSumBudget,
+    'subjects':subjects
+      };
+
   factory Speciality.fromJson(Map<String, dynamic> json) {
     var pointsMap = json['points'] != null
         ? Map<String, int>.from(json['points'])
-        : new Map<String, int>();
+        : Map<String, int>();
 
     return Speciality(
-      id: json['id'],
-      name: json['name'],
-      code: json['code'],
-      description: json['description'],
-      price: json['price'],
-      degree: Degree.bachelor,
-      points: pointsMap,
+        id: json['id'],
+        name: json['name'],
+        code: json['code'],
+        description: json['description'],
+        price: json['price'],
+        degree: Degree.bachelor,
+        points: pointsMap,
+        pointsSum: json['pointsSum'],
+        pointsSumBudget: json['pointsSumBudget'],
+        subjects: List<String>.from(json['subjects'] as List<dynamic>),
     );
-
-
   }
-
 }
-
-
-

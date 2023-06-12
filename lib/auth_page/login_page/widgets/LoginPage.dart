@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   var passwordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Form(
@@ -85,10 +84,12 @@ class _LoginPageState extends State<LoginPage> {
                           //}
                           if (mounted) {
                             VisibilityController().makeVisible();
-                            Future<User?> user = AuthController.loginInApp(loginTextController.text, passwordTextController.text);
+                            Future<User?> user = AuthController.loginInApp(
+                                loginTextController.text,
+                                passwordTextController.text);
                             user.then((value) {
                               if (value == null) return;
-                              Get.off(()=>MainScaffold(user: value));
+                              Get.off(() => MainScaffold(user: value));
                             });
                             //VisibilityController().makeInvisible();
                           }
